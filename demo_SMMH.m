@@ -1,4 +1,4 @@
-function [] = demo_ourSMMH(bits, dataname)
+function [] = demo_SMMH(bits, dataname)
 %myFun - Description
 %
 % Syntax: [] = demo_SMMH(bits, dataname)
@@ -69,7 +69,7 @@ mapTI = zeros(run,1);
 mapIT = zeros(run,1);
 
 %% Data preparing
-tic
+
 Ntrain = size(I_tr,1);
 S = 2*L_tr*L_tr'-ones(Ntrain);
 sample = randsample(Ntrain, n_anchors);
@@ -102,12 +102,11 @@ Pht_dbT = exp(-sqdist(T_db,anchorT)/(2*sigmaT*sigmaT));
 Pht_dbT = [Pht_dbT, ones(size(Pht_dbT,1),1)];
 S = bits*S;
 S(S==0) = -bits;
-toc
+
 for j = 1:run
-    tic
+   
     [B_db,B_test,B_dbI,B_testI,B_dbT,B_testT] = solve(PhiI, PhtT,Phi_testI,Pht_testT,Phi_dbI,Pht_dbT, param,S,L_tr);
-    toc
-    tic
+
     B_db=compactbit(B_db);
     B_test=compactbit(B_test);
     B_dbI=compactbit(B_dbI);
@@ -128,7 +127,7 @@ for j = 1:run
     DhIT= hammingDist(B_dbT, B_testI);
     [P5] = perf_metric4Label( L_db, L_te, DhIT);
     mapIT(j) = P5;
-    toc
+    
 end
 
  
